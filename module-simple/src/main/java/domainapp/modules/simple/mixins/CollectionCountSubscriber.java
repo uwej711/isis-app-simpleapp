@@ -1,8 +1,12 @@
 package domainapp.modules.simple.mixins;
 
+import javax.inject.Inject;
+
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.Identifier;
+import org.apache.isis.applib.services.title.TitleService;
 
 import domainapp.modules.simple.dom.so.SimpleObject;
 
@@ -13,10 +17,18 @@ import domainapp.modules.simple.dom.so.SimpleObject;
  * To replicate the problem remove this annotation and see how the contribution disappears from the UI.
  */
 @Component
-public class SimpleObject_numberOfChildren extends Collection_count {
+public class CollectionCountSubscriber {
 
-	public SimpleObject_numberOfChildren(SimpleObject simpleObject) {
-		super(simpleObject.getChildren());
+	@EventListener(Collection_count.PropertyEvent.class)
+	public void on(Collection_count.PropertyEvent ev) {
+
+		final Object subject = ev.getSubject();
+		final Identifier identifier = ev.getIdentifier();
+		System.err.printf("%s collection '%s' now contains %d elements%n",
+				titleService.titleOf(subject),
+				identifier.getMemberName(),
+				ev.getNewValue());
 	}
 
+	@Inject TitleService titleService;
 }
