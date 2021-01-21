@@ -21,6 +21,11 @@
                                 </c:property>
                                 <c:property id="notes"/>
                             </c:fieldSet>
+                            <c:fieldSet name="Contributed by Collection_count Mixin" id="other" unreferencedProperties="true">
+                                <c:property id="numberOfChildren">
+                                    <c:named>Number Of Children</c:named>
+                                </c:property>
+                            </c:fieldSet>
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
