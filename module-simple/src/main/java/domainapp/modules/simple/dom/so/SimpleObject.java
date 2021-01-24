@@ -40,7 +40,7 @@ import lombok.val;
 @DomainObjectLayout()
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class SimpleObject extends HasName 
+public class SimpleObject extends HasName
 implements Comparable<SimpleObject> {
 
     public static SimpleObject withName(String name) {
@@ -57,10 +57,6 @@ implements Comparable<SimpleObject> {
 
     private SimpleObject() {
     }
-
-//    public String title() {
-//        return "Object: " + getName();
-//    }
 
     @Name
     @Getter @Setter @ToString.Include
