@@ -3,14 +3,12 @@ package domainapp.webapp.application.services.health;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.springframework.stereotype.Service;
-
 import org.apache.isis.applib.services.health.Health;
 import org.apache.isis.applib.services.health.HealthCheckService;
 
 import domainapp.modules.simple.dom.so.SimpleObjects;
 
-@Service
+//@Service
 @Named("domainapp.HealthCheckServiceImpl")
 public class HealthCheckServiceImpl implements HealthCheckService {
 
