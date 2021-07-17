@@ -70,7 +70,7 @@
 
         <dependency>
             <groupId>org.apache.isis.security</groupId>
-            <artifactId>isis-security-shiro</artifactId>
+            <artifactId>isis-security-keycloak</artifactId>
         </dependency>
 
         <dependency>
