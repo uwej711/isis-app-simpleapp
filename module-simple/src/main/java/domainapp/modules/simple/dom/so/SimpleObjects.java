@@ -18,11 +18,13 @@ import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
+import org.springframework.context.event.EventListener;
+
 import domainapp.modules.simple.types.Name;
 
 @DomainService(
         nature = NatureOfService.VIEW,
-        objectType = "simple.SimpleObjects"
+        logicalTypeName = "simple.SimpleObjects"
 )
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
@@ -88,5 +90,9 @@ public class SimpleObjects {
             });
     }
 
+    @EventListener(SimpleObject.UpdateName.ActionEvent.class)
+    public void on(SimpleObject.UpdateName.ActionEvent ev) {
+        System.out.println(ev.getIdentifier());
+    }
 
 }

@@ -14,6 +14,7 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.annotation.Title;
+import org.apache.isis.applib.events.domain.ActionDomainEvent;
 import org.apache.isis.applib.jaxb.PersistentEntityAdapter;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
@@ -97,23 +98,28 @@ public class SimpleObject implements Comparable<SimpleObject> {
     private String notes;
 
 
-    @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+
+    @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED, domainEvent = UpdateName.ActionEvent.class)
     @ActionLayout(associateWith = "name", promptStyle = PromptStyle.INLINE)
-    public SimpleObject updateName(
-            @Name final String name) {
-        setName(name);
-        return this;
-    }
-    public String default0UpdateName() {
-        return getName();
-    }
-    public String validate0UpdateName(String newName) {
-        for (char prohibitedCharacter : "&%$!".toCharArray()) {
-            if( newName.contains(""+prohibitedCharacter)) {
-                return "Character '" + prohibitedCharacter + "' is not allowed.";
-            }
+    public class UpdateName {
+
+        public class ActionEvent extends ActionDomainEvent<UpdateName> {}
+        public SimpleObject act(
+                @Name final String name) {
+            setName(name);
+            return SimpleObject.this;
         }
-        return null;
+        public String default0Act() {
+            return getName();
+        }
+        public String validate0Act(String newName) {
+            for (char prohibitedCharacter : "&%$!".toCharArray()) {
+                if( newName.contains(""+prohibitedCharacter)) {
+                    return "Character '" + prohibitedCharacter + "' is not allowed.";
+                }
+            }
+            return null;
+        }
     }
 
 
