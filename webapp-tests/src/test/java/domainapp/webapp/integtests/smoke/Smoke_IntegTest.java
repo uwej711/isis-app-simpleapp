@@ -4,18 +4,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.isis.applib.services.wrapper.InvalidException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import org.apache.isis.applib.services.wrapper.InvalidException;
+import org.apache.isis.applib.services.xactn.TransactionService;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.apache.isis.applib.services.xactn.TransactionService;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import domainapp.webapp.integtests.WebAppIntegTestAbstract;
 import domainapp.modules.simple.dom.so.SimpleObject;
 import domainapp.modules.simple.dom.so.SimpleObjects;
+import domainapp.webapp.integtests.WebAppIntegTestAbstract;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 class Smoke_IntegTest extends WebAppIntegTestAbstract {
@@ -54,7 +53,7 @@ class Smoke_IntegTest extends WebAppIntegTestAbstract {
 
 
         // when
-        wrap(fred).updateName("Freddy");
+        wrapMixin(SimpleObject.UpdateName.class, fred).act("Freddy");
         transactionService.flushTransaction();
 
         // then
@@ -71,7 +70,7 @@ class Smoke_IntegTest extends WebAppIntegTestAbstract {
 
         // when
         Assertions.assertThrows(InvalidException.class, () -> {
-            wrap(fred).updateName("New name !!!");
+            wrapMixin(SimpleObject.UpdateName.class, fred).act("New name !!!");
             transactionService.flushTransaction();
         }, "Exclamation mark is not allowed");
 
