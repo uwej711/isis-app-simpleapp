@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.applib.services.title.TitleService;
+import org.apache.isis.testing.unittestsupport.applib.dom.pojo.PojoTester;
 
 @ExtendWith(MockitoExtension.class)
 class SimpleObject_Test {
@@ -67,5 +68,15 @@ class SimpleObject_Test {
             verify(mockMessageService).informUser("'Foo' deleted");
             verify(mockRepositoryService).removeAndFlush(object);
         }
+    }
+
+    @Nested
+    class getters_and_setters {
+
+        @Test
+        void exercise() {
+            PojoTester.create().exercise(new SimpleObject());
+        }
+
     }
 }
