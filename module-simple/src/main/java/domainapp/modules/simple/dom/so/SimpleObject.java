@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.DependentDefaultsPolicy;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.MemberSupport;
@@ -132,7 +133,10 @@ public class SimpleObject implements Comparable<SimpleObject> {
     private String notes;
 
 
-    @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @Action(
+            semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED,
+            dependentDefaultsPolicy = DependentDefaultsPolicy.PRESERVE_CHANGES
+    )
     @ActionLayout(
             associateWith = "givenName", promptStyle = PromptStyle.INLINE,
             describedAs = "Updates the name of this object, certain characters (" + PROHIBITED_CHARACTERS + ") are not allowed.")

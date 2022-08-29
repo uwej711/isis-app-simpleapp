@@ -11,6 +11,7 @@ isis:
         explicit: true
         command-publishing: ignore_safe
         execution-publishing: all
+        dependent-defaults-policy: update_dependent
       action-layout:
         css-class:
           patterns:
