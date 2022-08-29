@@ -33,10 +33,10 @@ public class SimpleObject_IntegTest extends SimpleModuleIntegTestAbstract {
         @Test
         public void accessible() {
             // when
-            final String name = wrap(simpleObject).getName();
+            final String name = wrap(simpleObject).getGivenName();
 
             // then
-            assertThat(name).isEqualTo(simpleObject.getName());
+            assertThat(name).isEqualTo(simpleObject.getGivenName());
         }
 
         @Test
@@ -46,7 +46,7 @@ public class SimpleObject_IntegTest extends SimpleModuleIntegTestAbstract {
             assertThrows(DisabledException.class, ()->{
 
                 // when
-                wrap(simpleObject).setName("new name");
+                wrap(simpleObject).setGivenName("new name");
             });
         }
 
@@ -60,11 +60,11 @@ public class SimpleObject_IntegTest extends SimpleModuleIntegTestAbstract {
         public void can_be_updated_directly() {
 
             // when
-            wrap(simpleObject).updateName("new name");
+            wrap(simpleObject).updateName("new name", null, null);
             transactionService.flushTransaction();
 
             // then
-            assertThat(wrap(simpleObject).getName()).isEqualTo("new name");
+            assertThat(wrap(simpleObject).getGivenName()).isEqualTo("new name");
         }
 
         @Test
@@ -74,7 +74,7 @@ public class SimpleObject_IntegTest extends SimpleModuleIntegTestAbstract {
             InvalidException cause = assertThrows(InvalidException.class, ()->{
 
                 // when
-                wrap(simpleObject).updateName("new name!");
+                wrap(simpleObject).updateName("new name!", null, null);
             });
 
             // then

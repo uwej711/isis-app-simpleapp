@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SimpleObjectRepository extends JpaRepository<SimpleObject, Long> {
 
-    List<SimpleObject> findByNameContaining(final String name);
+    List<SimpleObject> findByGivenNameContaining(final String givenName);
 
-    SimpleObject findByName(final String name);
+    SimpleObject findByGivenName(final String givenName);
 
 }

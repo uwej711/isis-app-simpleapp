@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Domain;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.MemberSupport;
@@ -47,6 +46,8 @@ import lombok.ToString;
 import lombok.val;
 
 import domainapp.modules.simple.SimpleModule;
+import domainapp.modules.simple.types.FamilyName;
+import domainapp.modules.simple.types.MiddleInitial;
 import domainapp.modules.simple.types.Name;
 import domainapp.modules.simple.types.Notes;
 
@@ -55,7 +56,7 @@ import domainapp.modules.simple.types.Notes;
 @Table(
     schema= SimpleModule.SCHEMA,
     uniqueConstraints = {
-        @UniqueConstraint(name = "SimpleObject__name__UNQ", columnNames = {"name"})
+        @UniqueConstraint(name = "SimpleObject__givenName__UNQ", columnNames = {"givenName"})
     }
 )
 @NamedQueries({
@@ -63,7 +64,8 @@ import domainapp.modules.simple.types.Notes;
                 name = SimpleObject.NAMED_QUERY__FIND_BY_NAME_LIKE,
                 query = "SELECT so " +
                         "FROM SimpleObject so " +
-                        "WHERE so.name LIKE :name"
+                        "WHERE so.givenName LIKE :name " +
+                        "   OR so.familyName LIKE :name "
         )
 })
 @EntityListeners(IsisEntityListener.class)
@@ -88,9 +90,10 @@ public class SimpleObject implements Comparable<SimpleObject> {
     @Getter @Setter
     private long version;
 
-    public static SimpleObject withName(String name) {
+    public static SimpleObject withName(String givenName, String familyName) {
         val simpleObject = new SimpleObject();
-        simpleObject.setName(name);
+        simpleObject.setGivenName(givenName);
+        simpleObject.setFamilyName(familyName);
         return simpleObject;
     }
 
@@ -100,12 +103,26 @@ public class SimpleObject implements Comparable<SimpleObject> {
 
 
 
-    @Title
+    @Title(sequence = "1")
     @Name
-    @Column(length = Name.MAX_LEN, nullable = false, name = "name")
+    @Column(length = Name.MAX_LEN, nullable = false, name = "givenName")
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = LayoutConstants.FieldSetId.IDENTITY, sequence = "1")
-    private String name;
+    private String givenName;
+
+    @Title(sequence = "3", append = ".")
+    @FamilyName
+    @Column(length = FamilyName.MAX_LEN, nullable = true, name = "familyName")
+    @Getter @Setter @ToString.Include
+    @PropertyLayout(fieldSetId = LayoutConstants.FieldSetId.IDENTITY, sequence = "2")
+    private String familyName;
+
+    @Title(sequence = "2")
+    @MiddleInitial
+    @Column(length = MiddleInitial.MAX_LEN, nullable = true, name = "middleInitial")
+    @Getter @Setter @ToString.Include
+    @PropertyLayout(fieldSetId = LayoutConstants.FieldSetId.IDENTITY, sequence = "3")
+    private String middleInitial;
 
     @Notes
     @Column(length = Notes.MAX_LEN, nullable = true)
@@ -117,19 +134,34 @@ public class SimpleObject implements Comparable<SimpleObject> {
 
     @Action(semantics = IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(
-            associateWith = "name", promptStyle = PromptStyle.INLINE,
+            associateWith = "givenName", promptStyle = PromptStyle.INLINE,
             describedAs = "Updates the name of this object, certain characters (" + PROHIBITED_CHARACTERS + ") are not allowed.")
     public SimpleObject updateName(
-            @Name final String name) {
-        setName(name);
+            @Name final String name,
+            @FamilyName String familyName,
+            @MiddleInitial String middleInitial) {
+        setGivenName(name);
+        setFamilyName(familyName);
+        setMiddleInitial(middleInitial);
         return this;
     }
     @MemberSupport public String default0UpdateName() {
-        return getName();
+        return getGivenName();
+    }
+    @MemberSupport public String default1UpdateName(String givenName) {
+        return getFamilyName() != null ? getFamilyName() : givenName != null ? givenName.toUpperCase() : null;
     }
     @MemberSupport public String validate0UpdateName(String newName) {
         for (char prohibitedCharacter : PROHIBITED_CHARACTERS.toCharArray()) {
             if( newName.contains(""+prohibitedCharacter)) {
+                return "Character '" + prohibitedCharacter + "' is not allowed.";
+            }
+        }
+        return null;
+    }
+    @MemberSupport public String validate1UpdateName(String newName) {
+        for (char prohibitedCharacter : PROHIBITED_CHARACTERS.toCharArray()) {
+            if( newName != null && newName.contains(""+prohibitedCharacter)) {
                 return "Character '" + prohibitedCharacter + "' is not allowed.";
             }
         }
@@ -153,7 +185,7 @@ public class SimpleObject implements Comparable<SimpleObject> {
 
 
     private final static Comparator<SimpleObject> comparator =
-            Comparator.comparing(SimpleObject::getName);
+            Comparator.comparing(SimpleObject::getGivenName);
 
     @Override
     public int compareTo(final SimpleObject other) {

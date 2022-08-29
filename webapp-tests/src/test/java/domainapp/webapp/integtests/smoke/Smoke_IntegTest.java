@@ -54,11 +54,11 @@ class Smoke_IntegTest extends WebAppIntegTestAbstract {
 
 
         // when
-        wrap(fred).updateName("Freddy");
+        wrap(fred).updateName("Freddy", null, null);
         transactionService.flushTransaction();
 
         // then
-        assertThat(wrap(fred).getName()).isEqualTo("Freddy");
+        assertThat(wrap(fred).getGivenName()).isEqualTo("Freddy");
 
 
         // when
@@ -71,7 +71,7 @@ class Smoke_IntegTest extends WebAppIntegTestAbstract {
 
         // when
         Assertions.assertThrows(InvalidException.class, () -> {
-            wrap(fred).updateName("New name !!!");
+            wrap(fred).updateName("New name !!!", null, null);
             transactionService.flushTransaction();
         }, "Exclamation mark is not allowed");
 

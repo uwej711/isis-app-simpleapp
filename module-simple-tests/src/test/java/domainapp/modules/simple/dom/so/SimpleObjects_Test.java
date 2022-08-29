@@ -45,7 +45,7 @@ class SimpleObjects_Test {
 
             // expect
             when(mockRepositoryService.persist(
-                    argThat((ArgumentMatcher<SimpleObject>) simpleObject -> Objects.equals(simpleObject.getName(), someName)))
+                    argThat((ArgumentMatcher<SimpleObject>) simpleObject -> Objects.equals(simpleObject.getGivenName(), someName)))
             ).then((Answer<SimpleObject>) invocation -> invocation.getArgument(0));
 
             // when
@@ -53,7 +53,7 @@ class SimpleObjects_Test {
 
             // then
             assertThat(obj).isNotNull();
-            assertThat(obj.getName()).isEqualTo(someName);
+            assertThat(obj.getGivenName()).isEqualTo(someName);
         }
     }
 

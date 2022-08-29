@@ -94,6 +94,8 @@ public class SimpleObjects_IntegTest extends SimpleModuleIntegTestAbstract {
                     // when
                     wrap(menu).create("Fizz");
                     transactionService.flushTransaction();
+
+                    List<SimpleObject> simpleObjects = repositoryService.allInstances(SimpleObject.class);
                 });
 
                 // also expect

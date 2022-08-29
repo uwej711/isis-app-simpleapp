@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.apache.isis.applib.annotation.Action;
@@ -19,7 +18,6 @@ import org.apache.isis.applib.annotation.PromptStyle;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
-import org.apache.isis.commons.functional.Try;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +40,7 @@ public class SimpleObjects {
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public SimpleObject create(
             @Name final String name) {
-        return repositoryService.persist(SimpleObject.withName(name));
+        return repositoryService.persist(SimpleObject.withName(name, null));
     }
 
 
@@ -58,15 +56,15 @@ public class SimpleObjects {
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT, promptStyle = PromptStyle.DIALOG_SIDEBAR)
-    public List<SimpleObject> findByName(
-            @Name final String name
+    public List<SimpleObject> findByGivenName(
+            @Name final String givenName
             ) {
-        return simpleObjectRepository.findByNameContaining(name);
+        return simpleObjectRepository.findByGivenNameContaining(givenName);
     }
 
 
-    public SimpleObject findByNameExact(final String name) {
-        return simpleObjectRepository.findByName(name);
+    public SimpleObject findByGivenNameExact(final String givenName) {
+        return simpleObjectRepository.findByGivenName(givenName);
     }
 
 
@@ -79,11 +77,11 @@ public class SimpleObjects {
 
 
 
-    public void ping() {
+    @Programmatic public void ping() {
         jpaSupportService.getEntityManager(SimpleObject.class)
             .mapSuccess(entityManager -> {
                 final TypedQuery<SimpleObject> q = entityManager.createQuery(
-                        "SELECT p FROM SimpleObject p ORDER BY p.name",
+                        "SELECT p FROM SimpleObject p ORDER BY p.givenName",
                         SimpleObject.class)
                     .setMaxResults(1);
                 return q.getResultList();

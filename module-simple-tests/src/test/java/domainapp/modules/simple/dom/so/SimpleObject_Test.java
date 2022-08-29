@@ -26,7 +26,7 @@ class SimpleObject_Test {
 
     @BeforeEach
     public void setUp() throws Exception {
-        object = SimpleObject.withName("Foo");
+        object = SimpleObject.withName("Foo", null);
         object.titleService = mockTitleService;
         object.messageService = mockMessageService;
         object.repositoryService = mockRepositoryService;
@@ -38,13 +38,13 @@ class SimpleObject_Test {
         @Test
         void happy_case() {
             // given
-            assertThat(object.getName()).isEqualTo("Foo");
+            assertThat(object.getGivenName()).isEqualTo("Foo");
 
             // when
-            object.updateName("Bar");
+            object.updateName("Bar", null, null);
 
             // then
-            assertThat(object.getName()).isEqualTo("Bar");
+            assertThat(object.getGivenName()).isEqualTo("Bar");
         }
 
     }
