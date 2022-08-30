@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package domainapp.webapp.bdd;
+package domainapp.webapp.bdd.specs;
 
 import domainapp.webapp.integtests.WebAppIntegTestAbstract;
 import io.cucumber.spring.CucumberContextConfiguration;

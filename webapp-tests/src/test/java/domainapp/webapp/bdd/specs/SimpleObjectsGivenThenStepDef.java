@@ -1,4 +1,4 @@
-package domainapp.webapp.bdd.stepdefs.domain;
+package domainapp.webapp.bdd.specs;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ import lombok.val;
 
 import domainapp.modules.simple.dom.so.SimpleObject;
 import domainapp.modules.simple.dom.so.SimpleObjects;
-import domainapp.webapp.bdd.CucumberTestAbstract;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 

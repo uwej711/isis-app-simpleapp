@@ -1,4 +1,4 @@
-package domainapp.webapp.bdd.stepdefs;
+package domainapp.webapp.bdd.specs;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

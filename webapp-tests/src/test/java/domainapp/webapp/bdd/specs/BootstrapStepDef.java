@@ -1,8 +1,6 @@
-package domainapp.webapp.bdd.stepdefs.infrastructure;
+package domainapp.webapp.bdd.specs;
 
 import org.apache.isis.applib.annotation.PriorityPrecedence;
-
-import domainapp.webapp.bdd.CucumberTestAbstract;
 
 public class BootstrapStepDef extends CucumberTestAbstract {
 

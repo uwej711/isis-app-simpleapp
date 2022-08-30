@@ -1,4 +1,4 @@
-package domainapp.webapp.bdd.stepdefs.domain;
+package domainapp.webapp.bdd.specs;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package domainapp.webapp.bdd.stepdefs.domain;
+package domainapp.webapp.bdd.specs;
 
 import java.util.UUID;
 
@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.apache.isis.applib.services.wrapper.InvalidException;
 
 import domainapp.modules.simple.dom.so.SimpleObjects;
-import domainapp.webapp.bdd.CucumberTestAbstract;
 import io.cucumber.java.en.When;
 
 public class SimpleObjectsWhenStepDef extends CucumberTestAbstract {
