@@ -30,6 +30,67 @@
                 </excludes>
             </testResource>
         </testResources>
+        <plugins>
+
+            <!-- generate cucumber json result -->
+<!--
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-antrun-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>cucumber-cli</id>
+                  <phase>integration-test</phase>
+                  <goals>
+                    <goal>run</goal>
+                  </goals>
+                  <configuration>
+                    <skip>${skipBDD}</skip>
+                    <target>
+                      <echo message="Running Cucumber CLI" />
+                      <java classname="io.cucumber.core.cli.Main"
+                            fork="true"
+                            failonerror="true"
+                            newenvironment="true"
+                            maxmemory="1024m"
+                            classpathref="maven.test.classpath">
+                        <arg value="&#45;&#45;plugin" />
+                        <arg value="json:${project.build.directory}/cucumber-no-clobber.json" />
+                      </java>
+                    </target>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+-->
+
+            <!-- generate html report from cucumber json result -->
+<!--
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>${maven-cucumber-reporting.version}</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>SimpleApp</projectName>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <inputDirectory>${project.build.directory}</inputDirectory>
+                            <jsonFiles>
+                                <param>**/cucumber-no-clobber.json</param>
+                            </jsonFiles>
+                            <skip>${skipBDD}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+-->
+        </plugins>
     </build>
 
     <dependencies>
@@ -50,6 +111,12 @@
 
         <dependency>
             <groupId>org.apache.isis.testing</groupId>
+            <artifactId>isis-testing-specsupport-applib</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.isis.testing</groupId>
             <artifactId>isis-testing-fakedata-applib</artifactId>
             <scope>test</scope>
         </dependency>
@@ -57,6 +124,24 @@
         <dependency>
             <groupId>org.apache.isis.testing</groupId>
             <artifactId>isis-testing-fixtures-applib</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5-engine</artifactId>
             <scope>test</scope>
         </dependency>
 
