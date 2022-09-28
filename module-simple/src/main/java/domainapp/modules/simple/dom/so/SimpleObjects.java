@@ -1,20 +1,15 @@
 package domainapp.modules.simple.dom.so;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.TypedQuery;
 
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.BookmarkPolicy;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.PriorityPrecedence;
-import org.apache.isis.applib.annotation.PromptStyle;
-import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.Query;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jpa.applib.services.JpaSupportService;
@@ -33,6 +28,17 @@ public class SimpleObjects {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
     final SimpleObjectRepository simpleObjectRepository;
+
+    @Action()
+    public SimpleVM testWithViewModel(@Nullable final SimpleObject object, @Nullable LocalDate date, @Nullable String name){
+        return new SimpleVM(object, date, name);
+    }
+
+    @MemberSupport()
+    public List<SimpleObject> choices0TestWithViewModel(){
+        return simpleObjectRepository.findAll();
+    }
+
 
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)

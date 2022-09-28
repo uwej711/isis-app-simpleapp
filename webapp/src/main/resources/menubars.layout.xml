@@ -4,6 +4,7 @@
         <mb3:menu>
             <mb3:named>Simple Objects</mb3:named>
             <mb3:section>
+                <mb3:serviceAction objectType="simple.SimpleObjects" id="testWithViewModel"/>
                 <mb3:serviceAction objectType="simple.SimpleObjects" id="create"/>
                 <mb3:serviceAction objectType="simple.SimpleObjects" id="findByName"/>
                 <mb3:serviceAction objectType="simple.SimpleObjects" id="findByNameLike"/>
